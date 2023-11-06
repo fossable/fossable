@@ -1,3 +1,5 @@
+//! Official generators for project imagery.
+
 use serde::Serialize;
 use std::error::Error;
 
@@ -83,5 +85,7 @@ fn adjust_horizontal(c: usize) -> usize {
     return 7 * MULTIPLIER;
 }
 
-pub mod icon;
-pub mod logo;
+pub mod gantry;
+pub mod goldboot;
+pub mod sandpolis;
+pub mod turbine;

@@ -1,6 +1,6 @@
 [package]
 authors = ["Tyler Cook"]
-description = "Contains official branding and digital provenance for all fossable projects"
+description = "Contains official imagery and digital provenance for all fossable projects"
 edition = "2021"
 homepage = "https://fossable.org"
 license-file = "LICENSE.md"
