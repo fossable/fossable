@@ -1,0 +1,12 @@
+[package]
+authors = ["Tyler Cook"]
+description = "Contains official branding and digital provenance for all fossable projects"
+edition = "2021"
+homepage = "https://fossable.org"
+license-file = "LICENSE.md"
+name = "fossable"
+version = "0.1.0"
+
+[dependencies]
+quick-xml = {version = "0.22.0", features = ["serialize"] }
+serde = {version="1",features = ["derive"]}
