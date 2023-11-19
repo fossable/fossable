@@ -56,7 +56,7 @@ pub mod svg {
 }
 
 pub struct Logo {
-    pub matrix: [Vec<char>; 7],
+    pub matrix: [String; 7],
     pub margin_px: usize,
     pub rect_side_px: usize,
     pub rect_gap_px: usize,
@@ -111,11 +111,11 @@ impl Logo {
         // Makes the horizontal spacing a little bit nicer
         let mut horizontal_adjust = 0;
 
-        for c in 0..self.matrix.first().unwrap().len() {
+        for c in 0..self.matrix.first().unwrap().chars().count() {
             // Track empty columns
             let mut empty = true;
             for r in 0..self.matrix.len() {
-                if self.matrix[r][c] != ' ' {
+                if self.matrix[r].chars().nth(c).unwrap() != ' ' {
                     empty = false;
                     rects.push(Rect {
                         style: String::from(self.rect_style),
@@ -152,7 +152,7 @@ impl Logo {
             // Track empty columns
             let mut empty = true;
             for r in 0..self.matrix.len() {
-                if self.matrix[r][c] != ' ' {
+                if self.matrix[r].chars().nth(c).unwrap() != ' ' {
                     empty = false;
                 }
             }
