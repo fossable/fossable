@@ -56,7 +56,7 @@ pub mod svg {
 }
 
 pub struct Logo {
-    pub matrix: [String; 7],
+    pub matrix: [&'static str; 7],
     pub margin_px: usize,
     pub rect_side_px: usize,
     pub rect_gap_px: usize,

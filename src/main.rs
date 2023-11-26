@@ -18,73 +18,13 @@ enum Commands {
     Imagery { name: String },
 }
 
-pub fn fossable_word() -> [String; 7] {
-    [
-        "                                      ◼       ◼        ".into(),
-        "◼ ◼                                   ◼       ◼        ".into(),
-        "◼     ◼ ◼ ◼     ◼ ◼     ◼ ◼     ◼ ◼   ◼ ◼ ◼   ◼     ◼ ◼".into(),
-        "◼ ◼   ◼   ◼     ◼       ◼     ◼   ◼   ◼   ◼   ◼   ◼ ◼  ".into(),
-        "◼     ◼ ◼ ◼   ◼ ◼     ◼ ◼       ◼ ◼   ◼ ◼ ◼   ◼     ◼ ◼".into(),
-        "                                                       ".into(),
-        "                                                       ".into(),
-    ]
-}
-
-pub fn goldboot_word() -> [String; 7] {
-    [
-        "                ◼       ◼   ◼                       ◼  ".into(),
-        "                ◼       ◼   ◼                       ◼ ◼".into(),
-        "◼ ◼ ◼   ◼ ◼ ◼   ◼   ◼ ◼ ◼   ◼ ◼ ◼   ◼ ◼ ◼   ◼ ◼ ◼   ◼  ".into(),
-        "◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼  ".into(),
-        "◼ ◼ ◼   ◼ ◼ ◼   ◼   ◼ ◼ ◼   ◼ ◼ ◼   ◼ ◼ ◼   ◼ ◼ ◼   ◼ ◼".into(),
-        "    ◼                                                  ".into(),
-        "◼ ◼ ◼                                                  ".into(),
-    ]
-}
-
-pub fn gantry_word() -> [String; 7] {
-    [
-        "                        ◼                ".into(),
-        "                        ◼ ◼              ".into(),
-        "◼ ◼ ◼     ◼ ◼   ◼ ◼ ◼   ◼     ◼ ◼   ◼   ◼".into(),
-        "◼   ◼   ◼   ◼   ◼   ◼   ◼     ◼     ◼   ◼".into(),
-        "◼ ◼ ◼     ◼ ◼   ◼   ◼   ◼ ◼   ◼     ◼ ◼ ◼".into(),
-        "    ◼                                   ◼".into(),
-        "◼ ◼ ◼                               ◼ ◼ ◼".into(),
-    ]
-}
-
-pub fn sandpolis_word() -> [String; 7] {
-    [
-        "                            ◼                   ◼            ".into(),
-        "                            ◼                   ◼            ".into(),
-        "  ◼ ◼     ◼ ◼   ◼ ◼ ◼   ◼ ◼ ◼   ◼ ◼ ◼   ◼ ◼ ◼   ◼   ◼     ◼ ◼".into(),
-        "  ◼     ◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼   ◼     ◼  ".into(),
-        "◼ ◼       ◼ ◼   ◼   ◼   ◼ ◼ ◼   ◼ ◼ ◼   ◼ ◼ ◼   ◼   ◼   ◼ ◼  ".into(),
-        "                                ◼                            ".into(),
-        "                                ◼                            ".into(),
-    ]
-}
-
-pub fn turbine_word() -> [String; 7] {
-    [
-        "◼                   ◼                        ".into(),
-        "◼ ◼                 ◼                        ".into(),
-        "◼     ◼   ◼   ◼ ◼   ◼ ◼ ◼   ◼   ◼ ◼ ◼     ◼ ◼".into(),
-        "◼     ◼   ◼   ◼     ◼   ◼   ◼   ◼   ◼   ◼ ◼  ".into(),
-        "◼ ◼   ◼ ◼ ◼   ◼     ◼ ◼ ◼   ◼   ◼   ◼     ◼ ◼".into(),
-        "                                             ".into(),
-        "                                             ".into(),
-    ]
-}
-
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
     match &args.command {
         Commands::Imagery { name } => {
             let logo = match name.as_str() {
                 "fossable" => Logo {
-                    matrix: fossable_word(),
+                    matrix: fossable::fossable_word(),
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
@@ -92,7 +32,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     bg_style: Some("fill:#333333"),
                 },
                 "goldboot" => Logo {
-                    matrix: goldboot_word(),
+                    matrix: fossable::goldboot_word(),
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
@@ -100,7 +40,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     bg_style: Some("fill:#333333"),
                 },
                 "gantry" => Logo {
-                    matrix: gantry_word(),
+                    matrix: fossable::gantry_word(),
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
@@ -108,7 +48,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     bg_style: Some("fill:#333333"),
                 },
                 "sandpolis" => Logo {
-                    matrix: sandpolis_word(),
+                    matrix: fossable::sandpolis_word(),
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
@@ -116,7 +56,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     bg_style: Some("fill:#333333"),
                 },
                 "turbine" => Logo {
-                    matrix: turbine_word(),
+                    matrix: fossable::turbine_word(),
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
