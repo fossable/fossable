@@ -1,10 +1,10 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::error::Error;
 
-#[derive(Serialize, Default)]
+#[derive(Serialize, Deserialize, Default)]
 #[serde(rename = "svg")]
 pub struct Svg {
-    pub g: G,
+    pub g: Vec<G>,
     #[serde(rename = "@width")]
     pub width: String,
     #[serde(rename = "@height")]
@@ -22,13 +22,29 @@ impl Svg {
     }
 }
 
-#[derive(Serialize, Default)]
+#[derive(Serialize, Deserialize, Default)]
 #[serde(rename = "g")]
 pub struct G {
+    #[serde(default)]
     pub rect: Vec<Rect>,
+    #[serde(default)]
+    pub path: Vec<Path>,
+    #[serde(rename = "@transform")]
+    pub transform: Option<String>,
 }
 
-#[derive(Serialize, Default, Clone)]
+#[derive(Serialize, Deserialize, Default, Clone)]
+#[serde(rename = "path")]
+pub struct Path {
+    #[serde(rename = "@id")]
+    pub id: String,
+    #[serde(rename = "@style")]
+    pub style: String,
+    #[serde(rename = "@d")]
+    pub d: String,
+}
+
+#[derive(Serialize, Deserialize, Default, Clone)]
 #[serde(rename = "rect")]
 pub struct Rect {
     #[serde(rename = "@style")]
@@ -45,16 +61,4 @@ pub struct Rect {
     pub y: String,
     #[serde(rename = "@rx")]
     pub rx: String,
-}
-
-impl Rect {
-    pub fn to_svg(self) -> Svg {
-        Svg {
-            g: G {
-                rect: vec![self.clone()],
-            },
-            width: self.width,
-            height: self.height,
-        }
-    }
 }

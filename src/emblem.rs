@@ -1,3 +1,5 @@
+use std::error::Error;
+
 use crate::svg::*;
 
 /// Each project has a unique emblem which is an icon plus block text.
@@ -13,32 +15,66 @@ pub struct Emblem {
 }
 
 impl Emblem {
-    pub fn to_svg(&self) -> Svg {
+    pub fn to_svg(&self) -> Result<Svg, Box<dyn Error>> {
         let mut svg = Svg::default();
 
         // Add background
         if let Some(bg_style) = self.bg_style {
-            svg.g.rect.push(Rect {
-                style: String::from(bg_style),
-                id: format!("background"),
-                width: format!("100%"),
-                height: format!("100%"),
-                x: format!(""),
-                y: format!(""),
-                rx: String::from("3%"),
+            svg.g.push(G {
+                rect: vec![Rect {
+                    style: String::from(bg_style),
+                    id: format!("background"),
+                    width: format!("100%"),
+                    height: format!("100%"),
+                    x: format!(""),
+                    y: format!(""),
+                    rx: String::from("3%"),
+                }],
+                path: vec![],
+                transform: None,
+            });
+        }
+
+        // Add icon
+        if self.icon_width.is_some() {
+            let icon: Svg = quick_xml::de::from_str(self.icon.as_str())?;
+
+            // Position the icon
+            svg.g.push(G {
+                rect: vec![],
+                path: icon
+                    .g
+                    .first()
+                    .unwrap()
+                    .path
+                    .iter()
+                    .map(|p| Path {
+                        id: p.id.clone(),
+                        style: String::from(self.rect_style),
+                        d: p.d.clone(),
+                    })
+                    .collect(),
+                transform: Some(format!(
+                    "translate({},{})",
+                    self.margin_px / 2,
+                    self.margin_px / 2
+                )),
             });
         }
 
         // Add letters
-        for rect in self.generate_rects() {
-            svg.g.rect.push(rect);
-        }
+        svg.g.push(G {
+            rect: self.generate_rects(),
+            path: vec![],
+            transform: None,
+        });
 
         // Set image dimensions
         svg.width = format!(
             "{}",
             (self.margin_px * 2)
-                + ((self.matrix.first().unwrap().len() - 1)
+                + self.icon_width.unwrap_or(0)
+                + ((self.matrix.first().unwrap().chars().count() - 1)
                     * (self.rect_side_px + self.rect_gap_px))
                 + self.rect_side_px
                 - self.total_horizontal_adjust()
@@ -50,7 +86,7 @@ impl Emblem {
                 + self.rect_side_px
         );
 
-        return svg;
+        return Ok(svg);
     }
 
     fn generate_rects(&self) -> Vec<Rect> {
@@ -72,7 +108,12 @@ impl Emblem {
                         height: format!("{}", self.rect_side_px),
                         x: format!(
                             "{}",
-                            self.margin_px + (c * self.rect_side_px + c * self.rect_gap_px)
+                            // Leave some space for the margin
+                            self.margin_px
+                                // Leave some space for the icon if present
+                                + self.icon_width.unwrap_or(0)
+                                + (c * self.rect_side_px + c * self.rect_gap_px)
+                                // Remove some space between each letter
                                 - horizontal_adjust
                         ),
                         y: format!(

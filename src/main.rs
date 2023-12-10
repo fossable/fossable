@@ -17,7 +17,13 @@ struct Args {
 #[derive(Subcommand)]
 enum Commands {
     /// Generate project emblems
-    Emblem { name: String, bg: bool, icon: bool },
+    Emblem {
+        name: String,
+        #[clap(long, action)]
+        bg: bool,
+        #[clap(long, action)]
+        icon: bool,
+    },
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -42,7 +48,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     rect_gap_px: 1,
                     rect_style: "fill:#c8ab37",
                     bg_style: if *bg { Some("fill:#333333") } else { None },
-                    icon_width: if *icon { Some(50) } else { None },
+                    icon_width: if *icon { Some(40) } else { None },
                     icon: include_str!("../icons/goldboot.svg").to_string(),
                 },
                 "gantry" => Emblem {
@@ -79,7 +85,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             };
 
             // Save SVG
-            logo.to_svg().write_to(&format!("{}.svg", name))?;
+            logo.to_svg()?.write_to(&format!("{}.svg", name))?;
 
             // Save PNGs
             // TODO
