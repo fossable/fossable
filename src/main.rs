@@ -1,8 +1,10 @@
 use clap::{Parser, Subcommand};
-use imagery::Logo;
+use emblem::Emblem;
 use std::error::Error;
 
-pub mod imagery;
+pub mod emblem;
+pub mod svg;
+pub mod words;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -14,54 +16,64 @@ struct Args {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Generate imagery
-    Imagery { name: String },
+    /// Generate project emblems
+    Emblem { name: String, bg: bool, icon: bool },
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
     match &args.command {
-        Commands::Imagery { name } => {
+        Commands::Emblem { name, bg, icon } => {
             let logo = match name.as_str() {
-                "fossable" => Logo {
-                    matrix: fossable::fossable_word(),
+                "fossable" => Emblem {
+                    matrix: words::fossable(),
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
                     rect_style: "fill:#413577",
-                    bg_style: Some("fill:#333333"),
+                    bg_style: if *bg { Some("fill:#333333") } else { None },
+                    icon_width: if *icon { Some(50) } else { None },
+                    icon: include_str!("../icons/fossable.svg").to_string(),
                 },
-                "goldboot" => Logo {
-                    matrix: fossable::goldboot_word(),
+                "goldboot" => Emblem {
+                    matrix: words::goldboot(),
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
                     rect_style: "fill:#c8ab37",
-                    bg_style: Some("fill:#333333"),
+                    bg_style: if *bg { Some("fill:#333333") } else { None },
+                    icon_width: if *icon { Some(50) } else { None },
+                    icon: include_str!("../icons/goldboot.svg").to_string(),
                 },
-                "gantry" => Logo {
-                    matrix: fossable::gantry_word(),
+                "gantry" => Emblem {
+                    matrix: words::gantry(),
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
                     rect_style: "fill:#378B2E",
-                    bg_style: Some("fill:#333333"),
+                    bg_style: if *bg { Some("fill:#333333") } else { None },
+                    icon_width: if *icon { Some(50) } else { None },
+                    icon: include_str!("../icons/gantry.svg").to_string(),
                 },
-                "sandpolis" => Logo {
-                    matrix: fossable::sandpolis_word(),
+                "sandpolis" => Emblem {
+                    matrix: words::sandpolis(),
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
                     rect_style: "fill:#AC4F40",
-                    bg_style: Some("fill:#333333"),
+                    bg_style: if *bg { Some("fill:#333333") } else { None },
+                    icon_width: if *icon { Some(50) } else { None },
+                    icon: include_str!("../icons/sandpolis.svg").to_string(),
                 },
-                "turbine" => Logo {
-                    matrix: fossable::turbine_word(),
+                "turbine" => Emblem {
+                    matrix: words::turbine(),
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
                     rect_style: "fill:#378B2E",
-                    bg_style: Some("fill:#333333"),
+                    bg_style: if *bg { Some("fill:#333333") } else { None },
+                    icon_width: if *icon { Some(50) } else { None },
+                    icon: include_str!("../icons/turbine.svg").to_string(),
                 },
                 _ => todo!(),
             };

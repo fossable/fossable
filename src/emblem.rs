@@ -1,71 +1,19 @@
-//! Official generators for project imagery.
-use svg::*;
+use crate::svg::*;
 
-pub mod svg {
-    use serde::Serialize;
-    use std::error::Error;
-
-    #[derive(Serialize, Default)]
-    #[serde(rename = "svg")]
-    pub struct Svg {
-        pub g: G,
-        pub width: String,
-        pub height: String,
-    }
-
-    impl Svg {
-        pub fn write_to(&self, path: &str) -> Result<(), Box<dyn Error>> {
-            std::fs::write(path, quick_xml::se::to_string(&self)?)?;
-            Ok(())
-        }
-
-        pub fn to_string(&self) -> String {
-            quick_xml::se::to_string(&self).unwrap()
-        }
-    }
-
-    #[derive(Serialize, Default)]
-    #[serde(rename = "g")]
-    pub struct G {
-        pub rect: Vec<Rect>,
-    }
-
-    #[derive(Serialize, Default, Clone)]
-    #[serde(rename = "rect")]
-    pub struct Rect {
-        pub style: String,
-        pub id: String,
-        pub width: String,
-        pub height: String,
-        pub x: String,
-        pub y: String,
-        pub rx: String,
-    }
-
-    impl Rect {
-        pub fn to_svg(self) -> Svg {
-            Svg {
-                g: G {
-                    rect: vec![self.clone()],
-                },
-                width: self.width,
-                height: self.height,
-            }
-        }
-    }
-}
-
-pub struct Logo {
+/// Each project has a unique emblem which is an icon plus block text.
+pub struct Emblem {
     pub matrix: [&'static str; 7],
     pub margin_px: usize,
     pub rect_side_px: usize,
     pub rect_gap_px: usize,
     pub rect_style: &'static str,
     pub bg_style: Option<&'static str>,
+    pub icon_width: Option<usize>,
+    pub icon: String,
 }
 
-impl Logo {
-    pub fn to_svg(&self) -> svg::Svg {
+impl Emblem {
+    pub fn to_svg(&self) -> Svg {
         let mut svg = Svg::default();
 
         // Add background
@@ -148,7 +96,7 @@ impl Logo {
         // Makes the horizontal spacing a little bit nicer
         let mut horizontal_adjust = 0;
 
-        for c in 0..self.matrix.first().unwrap().len() {
+        for c in 0..self.matrix.first().unwrap().chars().count() {
             // Track empty columns
             let mut empty = true;
             for r in 0..self.matrix.len() {
