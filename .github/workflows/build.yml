@@ -43,9 +43,9 @@ jobs:
           mkdir artifacts
           for name in fossable sandpolis goldboot gantry turbine; do
             # Generate SVG
-            target/${{ matrix.target }}/release/fossable ${name} --output artifacts --icon --bg
-            target/${{ matrix.target }}/release/fossable ${name} --output artifacts --icon
-            target/${{ matrix.target }}/release/fossable ${name} --output artifacts
+            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts --icon --bg
+            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts --icon
+            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts
 
             # Generate emblem rasters
             for height in 256 512 1024 2048 4096; do
