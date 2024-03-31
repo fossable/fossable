@@ -1,13 +1,18 @@
-#!/bin/bash
+#!/bin/bash -e
 
-# Generate logo rasters
-for height in 256 512 1024 2048 4096; do
-	inkscape --export-type png -h ${height} -o output/logo-${height}.png output/logo.svg
-	inkscape --export-type png -h ${height} -o output/logo-bg-${height}.png output/logo-bg.svg
+shopt -s nullglob
+mkdir -p artifacts
+
+# Generate emblem rasters
+for path in artifacts/*.svg; do
+	for height in 256 512 1024 2048 4096; do
+		inkscape --export-type png -h ${height} -o artifacts/$(basename ${path%.svg})-${height}.png ${path}
+	done
 done
 
 # Generate icon rasters
-for height in 32 64 128 256 512 1024 2048; do
-	inkscape --export-type png -h ${height} -o output/icon-${height}.png output/icon.svg
-	inkscape --export-type png -h ${height} -o output/icon-bg-${height}.png output/icon-bg.svg
+for path in icons/*.svg; do
+	for height in 32 64 128 256 512 1024 2048; do
+		inkscape --export-type png -h ${height} -o artifacts/$(basename ${path%.svg})-${height}.png ${path}
+	done
 done

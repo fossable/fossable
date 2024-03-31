@@ -39,26 +39,7 @@ jobs:
           args: --release --target ${{ matrix.target }}
 
       - name: Generate artifacts
-        run: |
-          mkdir artifacts
-          for name in fossable sandpolis goldboot gantry turbine; do
-            # Generate SVG
-            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts --icon --bg
-            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts --icon
-            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts
-
-            # Generate emblem rasters
-            for height in 256 512 1024 2048 4096; do
-              for file in ${name}-bg-icon ${name}-nobg-icon ${name}-nobg-noicon; do
-              	inkscape --export-type png -h ${height} -o artifacts/${file}-${height}.png artifacts/${file}.svg
-              done
-            done
-
-            # Generate icon rasters
-            for height in 32 64 128 256 512 1024 2048; do
-            	inkscape --export-type png -h ${height} -o artifacts/${name}-${height}.png icons/${name}.svg
-            done
-          done
+        run: raster.sh
 
       - uses: actions/upload-artifact@v4
         with:
