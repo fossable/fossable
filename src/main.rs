@@ -23,13 +23,22 @@ enum Commands {
         bg: bool,
         #[clap(long, action)]
         icon: bool,
+
+        /// Output directory
+        #[clap(long)]
+        output: String,
     },
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
     match &args.command {
-        Commands::Emblem { name, bg, icon } => {
+        Commands::Emblem {
+            name,
+            bg,
+            icon,
+            output,
+        } => {
             let logo = match name.as_str() {
                 "fossable" => Emblem {
                     matrix: words::fossable(),
@@ -85,11 +94,11 @@ fn main() -> Result<(), Box<dyn Error>> {
             };
 
             // Save SVG
-            logo.to_svg()?.write_to(&format!("{}.svg", name))?;
-
-            // Save PNGs
-            // TODO
-            // inkscape --export-type png -h ${height} -o output/icon-${height}.png output/icon.svg
+            logo.to_svg()?.write_to(&format!(
+                "{output}/{name}-{}-{}.svg",
+                if *bg { "bg" } else { "nobg" },
+                if *icon { "icon" } else { "noicon" },
+            ))?;
         }
     };
     Ok(())
