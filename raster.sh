@@ -2,6 +2,7 @@
 
 shopt -s nullglob
 mkdir -p artifacts
+set -x
 
 # Generate emblem rasters
 for path in artifacts/*.svg; do

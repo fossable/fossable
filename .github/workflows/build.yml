@@ -38,8 +38,17 @@ jobs:
           command: build
           args: --release --target ${{ matrix.target }}
 
-      - name: Generate artifacts
-        run: raster.sh
+      - name: Generate SVGs
+        run: |
+          mkdir -p artifacts
+          for name in fossable sandpolis goldboot gantry turbine; do
+            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts --icon --bg
+            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts --icon
+            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts
+          done
+
+      - name: Generate PNGs
+        run: ./raster.sh
 
       - uses: actions/upload-artifact@v4
         with:
