@@ -18,6 +18,10 @@ impl Emblem {
     pub fn to_svg(&self) -> Result<Svg, Box<dyn Error>> {
         let mut svg = Svg::default();
 
+        // Add SVG namespaces
+        svg.xmlns = "http://www.w3.org/2000/svg".to_string();
+        svg.xmlns_xlink = "http://www.w3.org/1999/xlink".to_string();
+
         // Add background
         if let Some(bg_style) = self.bg_style {
             svg.g.push(G {

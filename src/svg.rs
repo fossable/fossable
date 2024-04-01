@@ -9,6 +9,10 @@ pub struct Svg {
     pub width: String,
     #[serde(rename = "@height")]
     pub height: String,
+    #[serde(rename = "@xmlns")]
+    pub xmlns: String,
+    #[serde(rename = "@xmlns:xlink")]
+    pub xmlns_xlink: String,
 }
 
 impl Svg {
