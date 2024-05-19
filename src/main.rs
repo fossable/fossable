@@ -1,5 +1,6 @@
 use clap::{Parser, Subcommand};
 use emblem::Emblem;
+use fossable::signing;
 use std::error::Error;
 
 pub mod emblem;
@@ -27,6 +28,21 @@ enum Commands {
         /// Output directory
         #[clap(long)]
         output: String,
+    },
+
+    /// Create cryptographic signature for artifact
+    Sign {
+        /// File path of the artifact to sign
+        artifact: String,
+
+        /// File path of signing (private!) key
+        key: String,
+    },
+
+    /// Verify cryptographic signature for artifact
+    Verify {
+        /// File path of the artifact to verify
+        artifact: String,
     },
 }
 
@@ -100,6 +116,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                 if *icon { "icon" } else { "noicon" },
             ))?;
         }
+        Commands::Sign { artifact, key } => todo!(),
+        Commands::Verify { artifact } => signing::verify(artifact)?,
     };
     Ok(())
 }

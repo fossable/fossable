@@ -9,10 +9,10 @@ pub struct Svg {
     pub width: String,
     #[serde(rename = "@height")]
     pub height: String,
-    #[serde(rename = "@xmlns")]
-    pub xmlns: String,
-    #[serde(rename = "@xmlns:xlink")]
-    pub xmlns_xlink: String,
+    #[serde(rename = "@xmlns", skip_serializing_if = "Option::is_none")]
+    pub xmlns: Option<String>,
+    #[serde(rename = "@xmlns:xlink", skip_serializing_if = "Option::is_none")]
+    pub xmlns_xlink: Option<String>,
 }
 
 impl Svg {
