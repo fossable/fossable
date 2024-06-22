@@ -106,6 +106,16 @@ fn main() -> Result<(), Box<dyn Error>> {
                     icon_width: if *icon { Some(50) } else { None },
                     icon: include_str!("../icons/turbine.svg").to_string(),
                 },
+                "outpost" => Emblem {
+                    matrix: words::outpost(),
+                    margin_px: 7,
+                    rect_side_px: 7,
+                    rect_gap_px: 1,
+                    rect_style: "fill:#378B2E",
+                    bg_style: if *bg { Some("fill:#333333") } else { None },
+                    icon_width: if *icon { Some(50) } else { None },
+                    icon: include_str!("../icons/outpost.svg").to_string(),
+                },
                 _ => todo!(),
             };
 

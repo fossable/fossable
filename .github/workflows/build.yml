@@ -9,11 +9,6 @@ jobs:
   build-linux:
     name: Build / ubuntu-latest (x86_64) / ${{ matrix.target }}
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        target:
-          - x86_64-unknown-linux-gnu
     steps:
       - name: Install dependencies
         run: |
@@ -26,7 +21,6 @@ jobs:
           toolchain: nightly
           profile: minimal
           override: true
-          target: ${{ matrix.target }}
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,21 +28,20 @@ jobs:
       - name: Build
         uses: actions-rs/cargo@v1
         with:
-          use_cross: true
           command: build
-          args: --release --target ${{ matrix.target }}
+          args: --release
 
       - name: Generate SVGs
         run: |
           mkdir -p artifacts
-          for name in fossable sandpolis goldboot gantry turbine; do
-            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts --icon --bg
-            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts --icon
-            target/${{ matrix.target }}/release/fossable emblem ${name} --output artifacts
+          for name in fossable sandpolis goldboot gantry turbine outpost; do
+            target/release/fossable emblem ${name} --output artifacts --icon --bg
+            target/release/fossable emblem ${name} --output artifacts --icon
+            target/release/fossable emblem ${name} --output artifacts
           done
 
       - name: Generate PNGs
-        run: ./raster.sh
+        run: ./raster.sh artifacts
 
       - uses: actions/upload-artifact@v4
         with:
