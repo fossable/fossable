@@ -46,6 +46,14 @@ pub struct Path {
     pub style: String,
     #[serde(rename = "@d")]
     pub d: String,
+    #[serde(rename = "@stroke")]
+    pub stroke: Option<String>,
+    #[serde(rename = "@stroke-width")]
+    pub stroke_width: Option<String>,
+    #[serde(rename = "@stroke-linecap")]
+    pub stroke_linecap: Option<String>,
+    #[serde(rename = "@stroke-linejoin")]
+    pub stroke_linejoin: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Default, Clone)]

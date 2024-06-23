@@ -52,10 +52,11 @@ impl Emblem {
                     .unwrap()
                     .path
                     .iter()
-                    .map(|p| Path {
-                        id: p.id.clone(),
-                        style: String::from(self.rect_style),
-                        d: p.d.clone(),
+                    .map(|p| {
+                        // Replace style
+                        let mut p = p.clone();
+                        p.style = self.rect_style.to_string();
+                        p
                     })
                     .collect(),
                 transform: Some(format!(
