@@ -9,6 +9,7 @@ pub struct Emblem {
     pub rect_side_px: usize,
     pub rect_gap_px: usize,
     pub rect_style: &'static str,
+    pub icon_style: &'static str,
     pub bg_style: Option<&'static str>,
     pub icon_width: Option<usize>,
     pub icon: String,
@@ -17,6 +18,7 @@ pub struct Emblem {
 impl Emblem {
     pub fn to_svg(&self) -> Result<Svg, Box<dyn Error>> {
         let mut svg = Svg::default();
+        svg.fill = Some("none".into());
 
         // Add SVG namespaces
         svg.xmlns = Some("http://www.w3.org/2000/svg".to_string());
@@ -55,8 +57,8 @@ impl Emblem {
                     .map(|p| {
                         // Replace style
                         let mut p = p.clone();
-                        p.style = self.rect_style.to_string();
-                        p
+                        p.style = self.icon_style.to_string();
+                        p.clone()
                     })
                     .collect(),
                 transform: Some(format!(

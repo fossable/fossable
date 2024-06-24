@@ -1,3 +1,4 @@
+use quick_xml::se::Serializer;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 
@@ -9,6 +10,8 @@ pub struct Svg {
     pub width: String,
     #[serde(rename = "@height")]
     pub height: String,
+    #[serde(rename = "@fill")]
+    pub fill: Option<String>,
     #[serde(rename = "@xmlns", skip_serializing_if = "Option::is_none")]
     pub xmlns: Option<String>,
     #[serde(rename = "@xmlns:xlink", skip_serializing_if = "Option::is_none")]
@@ -17,7 +20,12 @@ pub struct Svg {
 
 impl Svg {
     pub fn write_to(&self, path: &str) -> Result<(), Box<dyn Error>> {
-        std::fs::write(path, quick_xml::se::to_string(&self)?)?;
+        let mut buffer = String::new();
+        let mut ser = Serializer::new(&mut buffer);
+        ser.indent(' ', 2);
+
+        self.serialize(ser)?;
+        std::fs::write(path, &buffer)?;
         Ok(())
     }
 
@@ -46,13 +54,13 @@ pub struct Path {
     pub style: String,
     #[serde(rename = "@d")]
     pub d: String,
-    #[serde(rename = "@stroke")]
+    #[serde(rename = "@stroke", skip_serializing_if = "Option::is_none")]
     pub stroke: Option<String>,
-    #[serde(rename = "@stroke-width")]
+    #[serde(rename = "@stroke-width", skip_serializing_if = "Option::is_none")]
     pub stroke_width: Option<String>,
-    #[serde(rename = "@stroke-linecap")]
+    #[serde(rename = "@stroke-linecap", skip_serializing_if = "Option::is_none")]
     pub stroke_linecap: Option<String>,
-    #[serde(rename = "@stroke-linejoin")]
+    #[serde(rename = "@stroke-linejoin", skip_serializing_if = "Option::is_none")]
     pub stroke_linejoin: Option<String>,
 }
 

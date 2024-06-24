@@ -62,6 +62,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     rect_side_px: 7,
                     rect_gap_px: 1,
                     rect_style: "fill:#413577",
+                    icon_style: "fill:#413577",
                     bg_style: if *bg { Some("fill:#333333") } else { None },
                     icon_width: if *icon { Some(50) } else { None },
                     icon: include_str!("../icons/fossable.svg").to_string(),
@@ -72,6 +73,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     rect_side_px: 7,
                     rect_gap_px: 1,
                     rect_style: "fill:#c8ab37",
+                    icon_style: "fill:#c8ab37",
                     bg_style: if *bg { Some("fill:#333333") } else { None },
                     icon_width: if *icon { Some(40) } else { None },
                     icon: include_str!("../icons/goldboot.svg").to_string(),
@@ -82,6 +84,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     rect_side_px: 7,
                     rect_gap_px: 1,
                     rect_style: "fill:#378B2E",
+                    icon_style: "fill:#378B2E",
                     bg_style: if *bg { Some("fill:#333333") } else { None },
                     icon_width: if *icon { Some(50) } else { None },
                     icon: include_str!("../icons/gantry.svg").to_string(),
@@ -92,6 +95,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     rect_side_px: 7,
                     rect_gap_px: 1,
                     rect_style: "fill:#AC4F40",
+                    icon_style: "fill:#AC4F40",
                     bg_style: if *bg { Some("fill:#333333") } else { None },
                     icon_width: if *icon { Some(50) } else { None },
                     icon: include_str!("../icons/sandpolis.svg").to_string(),
@@ -101,7 +105,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "stroke:#378B2E;fill:#378B2E",
+                    rect_style: "fill:#378B2E",
+                    icon_style: "stroke:#378B2E",
                     bg_style: if *bg { Some("fill:#333333") } else { None },
                     icon_width: if *icon { Some(50) } else { None },
                     icon: include_str!("../icons/turbine.svg").to_string(),
@@ -112,6 +117,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     rect_side_px: 7,
                     rect_gap_px: 1,
                     rect_style: "fill:#378B2E",
+                    icon_style: "fill:#378B2E",
                     bg_style: if *bg { Some("fill:#333333") } else { None },
                     icon_width: if *icon { Some(50) } else { None },
                     icon: include_str!("../icons/outpost.svg").to_string(),
@@ -126,7 +132,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 if *icon { "icon" } else { "noicon" },
             ))?;
         }
-        Commands::Sign { artifact, key } => todo!(),
+        Commands::Sign { artifact: _, key: _ } => todo!(),
         Commands::Verify { artifact } => signing::verify(artifact)?,
     };
     Ok(())
