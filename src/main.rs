@@ -130,7 +130,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             // Minor post processing
             match name.as_str() {
                 "sandpolis" => {
-                    let g = &mut svg.g[2];
+                    let g = &mut svg.g.last_mut().unwrap();
                     for i in 0..5 {
                         let rect = &mut g.rect[i];
                         rect.x = format!("{}", rect.x.parse::<usize>()? + 5);
