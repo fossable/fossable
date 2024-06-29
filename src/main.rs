@@ -83,8 +83,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "fill:#378B2E",
-                    icon_style: "fill:#378B2E",
+                    rect_style: "fill:#248467",
+                    icon_style: "fill:#248467",
                     bg_style: if *bg { Some("fill:#333333") } else { None },
                     icon_width: if *icon { Some(50) } else { None },
                     icon: include_str!("../icons/gantry.svg").to_string(),
@@ -94,8 +94,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "fill:#AC4F40",
-                    icon_style: "fill:#AC4F40",
+                    rect_style: "fill:#c89437",
+                    icon_style: "fill:#c89437",
                     bg_style: if *bg { Some("fill:#333333") } else { None },
                     icon_width: if *icon { Some(50) } else { None },
                     icon: include_str!("../icons/sandpolis.svg").to_string(),
@@ -105,8 +105,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "fill:#378B2E",
-                    icon_style: "stroke:#378B2E",
+                    rect_style: "fill:#c85037",
+                    icon_style: "stroke:#c85037",
                     bg_style: if *bg { Some("fill:#333333") } else { None },
                     icon_width: if *icon { Some(50) } else { None },
                     icon: include_str!("../icons/turbine.svg").to_string(),
@@ -125,14 +125,31 @@ fn main() -> Result<(), Box<dyn Error>> {
                 _ => todo!(),
             };
 
+            let mut svg = logo.to_svg()?;
+
+            // Minor post processing
+            match name.as_str() {
+                "sandpolis" => {
+                    let g = &mut svg.g[2];
+                    for i in 0..5 {
+                        let rect = &mut g.rect[i];
+                        rect.x = format!("{}", rect.x.parse::<usize>()? + 5);
+                    }
+                }
+                _ => {}
+            };
+
             // Save SVG
-            logo.to_svg()?.write_to(&format!(
+            svg.write_to(&format!(
                 "{output}/{name}-{}-{}.svg",
                 if *bg { "bg" } else { "nobg" },
                 if *icon { "icon" } else { "noicon" },
             ))?;
         }
-        Commands::Sign { artifact: _, key: _ } => todo!(),
+        Commands::Sign {
+            artifact: _,
+            key: _,
+        } => todo!(),
         Commands::Verify { artifact } => signing::verify(artifact)?,
     };
     Ok(())
