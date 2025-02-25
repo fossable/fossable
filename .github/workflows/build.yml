@@ -48,3 +48,31 @@ jobs:
           name: fossable-assets
           path: artifacts
 
+  dist-archlinux:
+    name: Dist / ArchLinux (x86_64) / ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - goldboot
+          - goldboot-registry
+          - sandpolis
+          - sandpolis-agent
+          - sandpolis-agent-git
+          - sandpolis-client
+          - sandpolis-client-git
+          - sandpolis-server
+          - sandpolis-server-git
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build archlinux package
+        uses: heyhusen/archlinux-package-action@v2
+        with:
+          path: dist/pacman/${{ matrix.package }}
+          flags: "-si --noconfirm"
+          namcap: true
+          updpkgsums: true
+          srcinfo: true
