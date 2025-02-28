@@ -42,6 +42,7 @@ jobs:
         with:
           path: dist/pacman/${{ matrix.package }}
           flags: "-si --noconfirm"
+          aur: true
           namcap: true
           srcinfo: true
           pkgver: ${{ steps.checkout_submodule.outputs.pkgver }}
