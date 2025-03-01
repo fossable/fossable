@@ -25,3 +25,9 @@
 [submodule "dist/pacman/sandpolis-client-git"]
 	path = dist/pacman/sandpolis-client-git
 	url = ssh://aur@aur.archlinux.org/sandpolis-client-git
+[submodule "dist/pacman/sandpolis-git"]
+	path = dist/pacman/sandpolis-git
+	url = ssh://aur@aur.archlinux.org/sandpolis-git
+[submodule "dist/pacman/goldboot-git"]
+	path = dist/pacman/goldboot-git
+	url = ssh://aur@aur.archlinux.org/goldboot-git
