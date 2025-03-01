@@ -38,10 +38,10 @@ jobs:
 
           echo "pkgver=0.1.0" >>"$GITHUB_OUTPUT"
 
-      - uses: heyhusen/archlinux-package-action@v2
+      - uses: cilki/archlinux-package-action@main
         with:
           path: dist/pacman/${{ matrix.package }}
-          flags: "-si --noconfirm"
+          flags: "-cfsi --noconfirm"
           aur: true
           namcap: true
           srcinfo: true
