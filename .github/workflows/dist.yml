@@ -26,7 +26,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Checkout submodule
-        id: checkout_submodule
         env:
           AUR_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
         run: |
@@ -36,7 +35,19 @@ jobs:
 
           GIT_SSH_COMMAND='ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts' git submodule update --init "dist/pacman/${{ matrix.package }}"
 
-          echo "pkgver=0.1.0" >>"$GITHUB_OUTPUT"
+      - name: Query package version
+        id: get_version
+        run: |
+          case "${{ matrix.package }}" in
+          *-git)
+            ;;
+          sandpolis*)
+            curl -s "https://crates.io/api/v1/crates/sandpolis" | jq -r '"pkgver=\(.crate.newest_version)"' >>"$GITHUB_OUTPUT"
+            ;;
+          *)
+            curl -s "https://crates.io/api/v1/crates/${{ matrix.package }}" | jq -r '"pkgver=\(.crate.newest_version)"' >>"$GITHUB_OUTPUT"
+            ;;
+          esac
 
       - uses: cilki/archlinux-package-action@main
         with:
@@ -45,7 +56,7 @@ jobs:
           aur: true
           namcap: true
           srcinfo: true
-          pkgver: ${{ steps.checkout_submodule.outputs.pkgver }}
+          pkgver: ${{ steps.get_version.outputs.pkgver }}
 
       - name: Push release to AUR
         run: |
@@ -56,5 +67,5 @@ jobs:
 
 
           git add .SRCINFO PKGBUILD
-          git commit -m "release: ${{ steps.checkout_submodule.outputs.pkgver }}"
+          git commit -m "release: ${{ steps.get_version.outputs.pkgver }}"
           GIT_SSH_COMMAND='ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts' git push -u origin master
