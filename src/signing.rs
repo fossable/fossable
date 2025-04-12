@@ -1,12 +1,11 @@
-use std::path::Path;
-
-use anyhow::Result;
 use pgp::{packet::PublicKey, Deserializable, Message};
+use std::error::Error;
+use std::path::Path;
 
 pub fn sign() {}
 
 /// Check that the given artifact was signed by the private key.
-pub fn verify<P>(path: P) -> Result<()>
+pub fn verify<P>(path: P) -> Result<(), Box<dyn Error>>
 where
     P: AsRef<Path>,
 {
