@@ -1,5 +1,4 @@
 use clap::{Parser, Subcommand};
-use fossable::signing;
 use std::error::Error;
 
 pub mod words;
@@ -15,6 +14,7 @@ struct Args {
 #[derive(Subcommand)]
 enum Commands {
     /// Create cryptographic signature for artifact
+    #[cfg(feature = "verify")]
     Sign {
         /// File path of the artifact to sign
         artifact: String,
@@ -24,6 +24,7 @@ enum Commands {
     },
 
     /// Verify cryptographic signature for artifact
+    #[cfg(feature = "verify")]
     Verify {
         /// File path of the artifact to verify
         artifact: String,
@@ -33,11 +34,14 @@ enum Commands {
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
     match &args.command {
+        #[cfg(feature = "verify")]
         Commands::Sign {
             artifact: _,
             key: _,
         } => todo!(),
-        Commands::Verify { artifact } => signing::verify(artifact)?,
+        #[cfg(feature = "verify")]
+        Commands::Verify { artifact } => fossable::signing::verify(artifact)?,
+        _ => todo!(),
     };
     Ok(())
 }
