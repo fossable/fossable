@@ -7,6 +7,7 @@ fn main() {
 fn build_graphics() {
     use svg::emblem::Emblem;
 
+    let manifest_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap();
     let out_dir = std::env::var("OUT_DIR").unwrap();
 
     for bg_style in [true, false] {
@@ -96,8 +97,8 @@ fn build_graphics() {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "fill:#c85037",
-                    icon_style: "stroke:#c85037",
+                    rect_style: "fill:#378B2E",
+                    icon_style: "stroke:#378B2E",
                     icon: include_str!("icons/turbine.svg").to_string(),
                     icon_width: Some(50),
                     bg_style: if bg_style { Some("fill:#333333") } else { None },
@@ -119,31 +120,53 @@ fn build_graphics() {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "fill:#378B2E",
-                    icon_style: "fill:#378B2E",
+                    rect_style: "fill:#c85037",
+                    icon_style: "stroke:#c85037",
                     icon: include_str!("icons/outpost.svg").to_string(),
                     icon_width: Some(50),
                     bg_style: if bg_style { Some("fill:#333333") } else { None },
                 },
             ),
         ] {
-            let svg = emblem.to_svg().unwrap();
+            let emblem_svg = emblem.to_svg().unwrap();
             let path = format!("{out_dir}/{project}.svg");
 
             // Write svg
             if !std::fs::exists(&path).unwrap() {
-                svg.write_to(&path).unwrap();
+                emblem_svg.write_to(&path).unwrap();
             }
 
-            // Write rasters in varying sizes
-            for height in [64, 128, 256, 512, 1024, 2048] {
+            // Write emblem rasters in varying sizes
+            for (width, height) in [(256, 128), (512, 256), (1024, 512), (2048, 1024)] {
                 let path = format!("{out_dir}/{project}-{height}.png");
                 if !std::fs::exists(&path).unwrap() {
-                    svg.rasterize(&path, height, height).unwrap();
+                    emblem_svg.rasterize(&path, width, height).unwrap();
                 }
             }
+
+            // Write icon rasters in varying sizes
+            // for height in [64, 128, 256, 512] {
+            //     let path = format!("{manifest_dir}/{project}.svg");
+            //     if !std::fs::exists(&path).unwrap() {
+            //         icon_svg.rasterize(&path, height, height).unwrap();
+            //     }
+            // }
         }
     }
+
+    // Create symlink in manifest dir to output directory
+    let symlink_path = format!("{manifest_dir}/generated");
+
+    // Remove existing symlink if it exists
+    if std::fs::exists(&symlink_path).unwrap() {
+        std::fs::remove_file(&symlink_path).ok();
+    }
+
+    // Create new symlink pointing to current OUT_DIR
+    #[cfg(unix)]
+    std::os::unix::fs::symlink(&out_dir, &symlink_path).unwrap();
+    #[cfg(windows)]
+    std::os::windows::fs::symlink_dir(&out_dir, &symlink_path).unwrap();
 }
 
 #[cfg(feature = "build-graphics")]
@@ -202,9 +225,11 @@ pub mod svg {
     #[serde(rename = "g")]
     pub struct SvgGroup {
         #[serde(default)]
+        pub path: Vec<SvgPath>,
+        #[serde(default)]
         pub rect: Vec<SvgRect>,
         #[serde(default)]
-        pub path: Vec<SvgPath>,
+        pub ellipse: Vec<SvgEllipse>,
         #[serde(rename = "@transform")]
         pub transform: Option<String>,
     }
@@ -247,6 +272,31 @@ pub mod svg {
         pub rx: String,
     }
 
+    #[derive(Serialize, Deserialize, Default, Clone)]
+    #[serde(rename = "ellipse")]
+    pub struct SvgEllipse {
+        #[serde(rename = "@cx")]
+        pub cx: String,
+        #[serde(rename = "@cy")]
+        pub cy: String,
+        #[serde(rename = "@id")]
+        pub id: String,
+        #[serde(rename = "@rx")]
+        pub rx: String,
+        #[serde(rename = "@ry")]
+        pub ry: String,
+        #[serde(rename = "@stroke", skip_serializing_if = "Option::is_none")]
+        pub stroke: Option<String>,
+        #[serde(rename = "@stroke-linecap", skip_serializing_if = "Option::is_none")]
+        pub stroke_linecap: Option<String>,
+        #[serde(rename = "@stroke-linejoin", skip_serializing_if = "Option::is_none")]
+        pub stroke_linejoin: Option<String>,
+        #[serde(rename = "@stroke-width", skip_serializing_if = "Option::is_none")]
+        pub stroke_width: Option<String>,
+        #[serde(rename = "@style")]
+        pub style: Option<String>,
+    }
+
     pub mod emblem {
         use super::*;
 
@@ -284,8 +334,7 @@ pub mod svg {
                             y: format!(""),
                             rx: String::from("3%"),
                         }],
-                        path: vec![],
-                        transform: None,
+                        ..Default::default()
                     });
                 }
 
@@ -295,7 +344,6 @@ pub mod svg {
 
                     // Position the icon
                     svg.g.push(SvgGroup {
-                        rect: vec![],
                         path: icon
                             .g
                             .first()
@@ -314,14 +362,14 @@ pub mod svg {
                             self.margin_px / 2,
                             self.margin_px / 2
                         )),
+                        ..Default::default()
                     });
                 }
 
                 // Add letters
                 svg.g.push(SvgGroup {
                     rect: self.generate_rects(),
-                    path: vec![],
-                    transform: None,
+                    ..Default::default()
                 });
 
                 // Set image dimensions

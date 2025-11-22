@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://raw.githubusercontent.com/fossable/fossable/master/.github/images/fossable-256.png" />
+	<img src="https://raw.githubusercontent.com/fossable/fossable/master/icons/fossable.svg" style="width:40%; height:auto;" />
 </p>
 
 ![Total GitHub stars](https://img.shields.io/github/stars/fossable)
