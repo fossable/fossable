@@ -127,6 +127,29 @@ fn build_graphics() {
                     bg_style: if bg_style { Some("fill:#333333") } else { None },
                 },
             ),
+            #[cfg(feature = "project-workset")]
+            (
+                "workset",
+                Emblem {
+                    word: [
+                        "                         ◼ ",
+                        "                         ◼◼",
+                        "◼   ◼ ◼◼◼ ◼◼ ◼ ◼  ◼◼  ◼◼ ◼ ",
+                        "◼ ◼ ◼ ◼ ◼ ◼  ◼◼   ◼  ◼◼  ◼ ",
+                        "◼◼ ◼◼ ◼◼◼ ◼  ◼ ◼ ◼◼   ◼◼ ◼◼",
+                        "                           ",
+                        "                           ",
+                    ],
+                    margin_px: 7,
+                    rect_side_px: 7,
+                    rect_gap_px: 1,
+                    rect_style: "fill:#3776c8",
+                    icon_style: "fill:#3776c8",
+                    icon: include_str!("icons/workset.svg").to_string(),
+                    icon_width: Some(50),
+                    bg_style: if bg_style { Some("fill:#333333") } else { None },
+                },
+            ),
         ] {
             let emblem_svg = emblem.to_svg().unwrap();
             let path = format!("{out_dir}/{project}.svg");
