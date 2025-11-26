@@ -1,64 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="800px"
-   height="800px"
-   viewBox="0 0 24 24"
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
    fill="none"
    version="1.1"
    id="svg1"
-   xmlns="http://www.w3.org/2000/svg">
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
   <g
      id="g1">
-    <!-- Cloud base - symmetrical design with gentle bumps -->
     <path
-       d="M 4.5 20 C 4.5 20 4.5 18.5 5.5 18 C 6 17.7 6.5 17.5 7 18 C 7 17.2 7.5 16.5 8 16.5 C 8.5 16.5 9 17 9 18 C 9 17 9.5 16 10.5 16 C 11.5 16 12 16.8 12 18 C 12 16.8 12.5 16 13.5 16 C 14.5 16 15 17 15 18 C 15 17 15.5 16.5 16 16.5 C 16.5 16.5 17 17.2 17 18 C 17.5 17.5 18 17.7 18.5 18 C 19.5 18.5 19.5 20 19.5 20 L 4.5 20 Z"
+       d="m 7.8313318,59.068908 c 0,0 0,-4.833733 3.2224892,-6.444978 1.611244,-0.966747 3.222489,-1.611244 4.833734,0 0,-2.577991 1.611244,-4.833733 3.222489,-4.833733 1.611244,0 3.222489,1.611244 3.222489,4.833733 0,-3.222489 1.611244,-6.444978 4.833733,-6.444978 3.222489,0 4.833734,2.577991 4.833734,6.444978 0,-3.866987 1.611245,-6.444978 4.833734,-6.444978 3.222489,0 4.833733,3.222489 4.833733,6.444978 0,-3.222489 1.611245,-4.833733 3.222489,-4.833733 1.611245,0 3.222489,2.255742 3.222489,4.833733 1.611245,-1.611244 3.22249,-0.966747 4.833734,0 3.222489,1.611245 3.222489,6.444978 3.222489,6.444978 z"
        style="stroke:#000000;stroke-opacity:1"
-       stroke-width="0.8"
+       stroke-width="2.57799"
        stroke-linecap="round"
        stroke-linejoin="round"
        fill="none"
        id="cloud" />
-
-    <!-- Lighthouse tower (tapered trapezoid) - base hidden in cloud -->
     <path
-       d="M 13 6 L 11 6 L 10.2 16 M 13.8 16 L 13 6"
+       d="M 35.222489,13.954061 H 28.777511 L 26.19952,46.178952 m 11.60096,0 -2.577991,-32.224891"
        style="stroke:#000000;stroke-opacity:1"
-       stroke-width="0.8"
+       stroke-width="2.57799"
        stroke-linecap="round"
        stroke-linejoin="round"
        fill="none"
        id="tower" />
-
-    <!-- Lighthouse top cap -->
     <path
-       d="M 10.8 3.5 L 13.2 3.5"
+       d="m 28.133013,5.8978383 h 7.733974"
        style="stroke:#000000;stroke-opacity:1"
-       stroke-width="0.8"
+       stroke-width="2.57799"
        stroke-linecap="round"
        id="cap" />
-
-    <!-- Horizontal stripes on tower -->
     <path
-       d="M 10.5 9 L 13.5 9"
+       d="m 27.166266,23.621528 h 9.667468"
        style="stroke:#000000;stroke-opacity:1"
-       stroke-width="0.6"
+       stroke-width="1.93349"
        stroke-linecap="round"
        id="stripe1" />
     <path
-       d="M 10.3 12 L 13.7 12"
+       d="M 26.521769,33.288996 H 37.478231"
        style="stroke:#000000;stroke-opacity:1"
-       stroke-width="0.6"
+       stroke-width="1.93349"
        stroke-linecap="round"
        id="stripe2" />
-
-    <!-- Lighthouse top dome/light housing -->
     <ellipse
-       cx="12"
-       cy="4.5"
-       rx="2"
-       ry="1.3"
+       cx="32"
+       cy="9.120327"
+       rx="6.4449782"
+       ry="4.1892357"
        style="stroke:#000000;stroke-opacity:1"
-       stroke-width="0.8"
+       stroke-width="2.57799"
        fill="none"
        id="dome" />
   </g>

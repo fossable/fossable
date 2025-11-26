@@ -1,4 +1,6 @@
 fn main() {
+    println!("cargo:rerun-if-changed=build.rs");
+
     #[cfg(feature = "build-graphics")]
     build_graphics();
 }
@@ -7,8 +9,13 @@ fn main() {
 fn build_graphics() {
     use svg::emblem::Emblem;
 
+    // Rerun if any icon files change
+    for entry in std::fs::read_dir("icons").unwrap() {
+        let entry = entry.unwrap();
+        println!("cargo:rerun-if-changed={}", entry.path().display());
+    }
+
     let manifest_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap();
-    let out_dir = std::env::var("OUT_DIR").unwrap();
 
     for bg_style in [true, false] {
         for (project, emblem) in [
@@ -144,7 +151,7 @@ fn build_graphics() {
                     rect_side_px: 7,
                     rect_gap_px: 1,
                     rect_style: "fill:#3776c8",
-                    icon_style: "fill:#3776c8",
+                    icon_style: "fill:#3776c8;stroke:#3776c8",
                     icon: include_str!("icons/workset.svg").to_string(),
                     icon_width: Some(50),
                     bg_style: if bg_style { Some("fill:#333333") } else { None },
@@ -152,19 +159,15 @@ fn build_graphics() {
             ),
         ] {
             let emblem_svg = emblem.to_svg().unwrap();
-            let path = format!("{out_dir}/{project}.svg");
+            let path = format!("{manifest_dir}/emblems/{project}.svg");
 
             // Write svg
-            if !std::fs::exists(&path).unwrap() {
-                emblem_svg.write_to(&path).unwrap();
-            }
+            emblem_svg.write_to(&path).unwrap();
 
             // Write emblem rasters in varying sizes
-            for (width, height) in [(256, 128), (512, 256), (1024, 512), (2048, 1024)] {
-                let path = format!("{out_dir}/{project}-{height}.png");
-                if !std::fs::exists(&path).unwrap() {
-                    emblem_svg.rasterize(&path, width, height).unwrap();
-                }
+            for (width, height) in [(256, 64), (512, 128), (1024, 256), (2048, 512)] {
+                let path = format!("{manifest_dir}/emblems/{project}-{width}.png");
+                emblem_svg.rasterize(&path, width, height).unwrap();
             }
 
             // Write icon rasters in varying sizes
@@ -176,20 +179,6 @@ fn build_graphics() {
             // }
         }
     }
-
-    // Create symlink in manifest dir to output directory
-    let symlink_path = format!("{manifest_dir}/generated");
-
-    // Remove existing symlink if it exists
-    if std::fs::exists(&symlink_path).unwrap() {
-        std::fs::remove_file(&symlink_path).ok();
-    }
-
-    // Create new symlink pointing to current OUT_DIR
-    #[cfg(unix)]
-    std::os::unix::fs::symlink(&out_dir, &symlink_path).unwrap();
-    #[cfg(windows)]
-    std::os::windows::fs::symlink_dir(&out_dir, &symlink_path).unwrap();
 }
 
 #[cfg(feature = "build-graphics")]
@@ -238,7 +227,13 @@ pub mod svg {
         {
             let svg = usvg::Tree::from_str(&self.to_string(), &usvg::Options::default())?;
             let mut pixmap = Pixmap::new(width, height).expect("invalid size");
-            resvg::render(&svg, Transform::default(), &mut pixmap.as_mut());
+
+            // Calculate scale to fit the SVG into the target dimensions
+            let svg_size = svg.size();
+            let scale = width as f32 / svg_size.width();
+
+            let transform = Transform::from_scale(scale, scale);
+            resvg::render(&svg, transform, &mut pixmap.as_mut());
             pixmap.save_png(path.as_ref())?;
             Ok(())
         }
@@ -253,6 +248,8 @@ pub mod svg {
         pub rect: Vec<SvgRect>,
         #[serde(default)]
         pub ellipse: Vec<SvgEllipse>,
+        #[serde(default)]
+        pub circle: Vec<SvgCircle>,
         #[serde(rename = "@transform")]
         pub transform: Option<String>,
     }
@@ -320,6 +317,29 @@ pub mod svg {
         pub style: Option<String>,
     }
 
+    #[derive(Serialize, Deserialize, Default, Clone)]
+    #[serde(rename = "circle")]
+    pub struct SvgCircle {
+        #[serde(rename = "@cx")]
+        pub cx: String,
+        #[serde(rename = "@cy")]
+        pub cy: String,
+        #[serde(rename = "@id")]
+        pub id: String,
+        #[serde(rename = "@r")]
+        pub rx: String,
+        #[serde(rename = "@stroke", skip_serializing_if = "Option::is_none")]
+        pub stroke: Option<String>,
+        #[serde(rename = "@stroke-linecap", skip_serializing_if = "Option::is_none")]
+        pub stroke_linecap: Option<String>,
+        #[serde(rename = "@stroke-linejoin", skip_serializing_if = "Option::is_none")]
+        pub stroke_linejoin: Option<String>,
+        #[serde(rename = "@stroke-width", skip_serializing_if = "Option::is_none")]
+        pub stroke_width: Option<String>,
+        #[serde(rename = "@style")]
+        pub style: Option<String>,
+    }
+
     pub mod emblem {
         use super::*;
 
@@ -365,12 +385,11 @@ pub mod svg {
                 if self.icon_width.is_some() {
                     let icon: Svg = quick_xml::de::from_str(self.icon.as_str())?;
 
+                    let icon_group = icon.g.first().unwrap();
+
                     // Position the icon
                     svg.g.push(SvgGroup {
-                        path: icon
-                            .g
-                            .first()
-                            .unwrap()
+                        path: icon_group
                             .path
                             .iter()
                             .map(|p| {
@@ -378,6 +397,36 @@ pub mod svg {
                                 let mut p = p.clone();
                                 p.style = self.icon_style.to_string();
                                 p.clone()
+                            })
+                            .collect(),
+                        rect: icon_group
+                            .rect
+                            .iter()
+                            .map(|r| {
+                                // Replace style
+                                let mut r = r.clone();
+                                r.style = self.icon_style.to_string();
+                                r.clone()
+                            })
+                            .collect(),
+                        ellipse: icon_group
+                            .ellipse
+                            .iter()
+                            .map(|e| {
+                                // Replace style
+                                let mut e = e.clone();
+                                e.style = Some(self.icon_style.to_string());
+                                e.clone()
+                            })
+                            .collect(),
+                        circle: icon_group
+                            .circle
+                            .iter()
+                            .map(|c| {
+                                // Replace style
+                                let mut c = c.clone();
+                                c.style = Some(self.icon_style.to_string());
+                                c.clone()
                             })
                             .collect(),
                         transform: Some(format!(
