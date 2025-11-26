@@ -35,8 +35,7 @@ fn build_graphics() {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "fill:#c8ab37",
-                    icon_style: "fill:#c8ab37",
+                    color: "#c8ab37",
                     icon: include_str!("icons/goldboot.svg").to_string(),
                     icon_width: Some(50),
                     bg_style: if bg_style { Some("fill:#333333") } else { None },
@@ -58,8 +57,7 @@ fn build_graphics() {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "fill:#248467",
-                    icon_style: "fill:#248467",
+                    color: "#248467",
                     icon: include_str!("icons/gantry.svg").to_string(),
                     icon_width: Some(50),
                     bg_style: if bg_style { Some("fill:#333333") } else { None },
@@ -81,8 +79,7 @@ fn build_graphics() {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "fill:#c89437",
-                    icon_style: "fill:#c89437",
+                    color: "#c89437",
                     icon: include_str!("icons/sandpolis.svg").to_string(),
                     icon_width: Some(50),
                     bg_style: if bg_style { Some("fill:#333333") } else { None },
@@ -104,8 +101,7 @@ fn build_graphics() {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "fill:#378B2E",
-                    icon_style: "stroke:#378B2E",
+                    color: "#378B2E",
                     icon: include_str!("icons/turbine.svg").to_string(),
                     icon_width: Some(50),
                     bg_style: if bg_style { Some("fill:#333333") } else { None },
@@ -127,8 +123,7 @@ fn build_graphics() {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "fill:#c85037",
-                    icon_style: "stroke:#c85037",
+                    color: "#c85037",
                     icon: include_str!("icons/outpost.svg").to_string(),
                     icon_width: Some(50),
                     bg_style: if bg_style { Some("fill:#333333") } else { None },
@@ -150,8 +145,7 @@ fn build_graphics() {
                     margin_px: 7,
                     rect_side_px: 7,
                     rect_gap_px: 1,
-                    rect_style: "fill:#3776c8",
-                    icon_style: "fill:#3776c8;stroke:#3776c8",
+                    color: "#3776c8",
                     icon: include_str!("icons/workset.svg").to_string(),
                     icon_width: Some(50),
                     bg_style: if bg_style { Some("fill:#333333") } else { None },
@@ -349,8 +343,7 @@ pub mod svg {
             pub margin_px: usize,
             pub rect_side_px: usize,
             pub rect_gap_px: usize,
-            pub rect_style: &'static str,
-            pub icon_style: &'static str,
+            pub color: &'static str,
             pub icon: String,
             pub icon_width: Option<usize>,
             pub bg_style: Option<&'static str>,
@@ -383,52 +376,18 @@ pub mod svg {
 
                 // Add icon
                 if self.icon_width.is_some() {
-                    let icon: Svg = quick_xml::de::from_str(self.icon.as_str())?;
+                    // Replace #000000 with the project color in the icon SVG
+                    let icon_svg = self.icon.replace("#000000", self.color);
+                    let icon: Svg = quick_xml::de::from_str(icon_svg.as_str())?;
 
                     let icon_group = icon.g.first().unwrap();
 
                     // Position the icon
                     svg.g.push(SvgGroup {
-                        path: icon_group
-                            .path
-                            .iter()
-                            .map(|p| {
-                                // Replace style
-                                let mut p = p.clone();
-                                p.style = self.icon_style.to_string();
-                                p.clone()
-                            })
-                            .collect(),
-                        rect: icon_group
-                            .rect
-                            .iter()
-                            .map(|r| {
-                                // Replace style
-                                let mut r = r.clone();
-                                r.style = self.icon_style.to_string();
-                                r.clone()
-                            })
-                            .collect(),
-                        ellipse: icon_group
-                            .ellipse
-                            .iter()
-                            .map(|e| {
-                                // Replace style
-                                let mut e = e.clone();
-                                e.style = Some(self.icon_style.to_string());
-                                e.clone()
-                            })
-                            .collect(),
-                        circle: icon_group
-                            .circle
-                            .iter()
-                            .map(|c| {
-                                // Replace style
-                                let mut c = c.clone();
-                                c.style = Some(self.icon_style.to_string());
-                                c.clone()
-                            })
-                            .collect(),
+                        path: icon_group.path.clone(),
+                        rect: icon_group.rect.clone(),
+                        ellipse: icon_group.ellipse.clone(),
+                        circle: icon_group.circle.clone(),
                         transform: Some(format!(
                             "translate({},{})",
                             self.margin_px / 2,
@@ -477,7 +436,7 @@ pub mod svg {
                         if self.word[r].chars().nth(c).unwrap() != ' ' {
                             empty = false;
                             rects.push(SvgRect {
-                                style: String::from(self.rect_style),
+                                style: format!("fill:{}", self.color),
                                 id: format!("{r}-{c}"),
                                 width: format!("{}", self.rect_side_px),
                                 height: format!("{}", self.rect_side_px),

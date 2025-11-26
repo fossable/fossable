@@ -1,0 +1,64 @@
+<svg width="245" height="69" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g transform="translate(3,3)">
+    <path id="cloud" style="stroke:#c85037;stroke-opacity:1" d="m 7.8313318,59.068908 c 0,0 0,-4.833733 3.2224892,-6.444978 1.611244,-0.966747 3.222489,-1.611244 4.833734,0 0,-2.577991 1.611244,-4.833733 3.222489,-4.833733 1.611244,0 3.222489,1.611244 3.222489,4.833733 0,-3.222489 1.611244,-6.444978 4.833733,-6.444978 3.222489,0 4.833734,2.577991 4.833734,6.444978 0,-3.866987 1.611245,-6.444978 4.833734,-6.444978 3.222489,0 4.833733,3.222489 4.833733,6.444978 0,-3.222489 1.611245,-4.833733 3.222489,-4.833733 1.611245,0 3.222489,2.255742 3.222489,4.833733 1.611245,-1.611244 3.22249,-0.966747 4.833734,0 3.222489,1.611245 3.222489,6.444978 3.222489,6.444978 z" stroke-width="2.57799" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="tower" style="stroke:#c85037;stroke-opacity:1" d="M 35.222489,13.954061 H 28.777511 L 26.19952,46.178952 m 11.60096,0 -2.577991,-32.224891" stroke-width="2.57799" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="cap" style="stroke:#c85037;stroke-opacity:1" d="m 28.133013,5.8978383 h 7.733974" stroke-width="2.57799" stroke-linecap="round"/>
+    <path id="stripe1" style="stroke:#c85037;stroke-opacity:1" d="m 27.166266,23.621528 h 9.667468" stroke-width="1.93349" stroke-linecap="round"/>
+    <path id="stripe2" style="stroke:#c85037;stroke-opacity:1" d="M 26.521769,33.288996 H 37.478231" stroke-width="1.93349" stroke-linecap="round"/>
+    <ellipse cx="32" cy="9.120327" id="dome" rx="6.4449782" ry="4.1892357" stroke-width="2.57799" style="stroke:#c85037;stroke-opacity:1"/>
+  </g>
+  <g transform="">
+    <rect style="fill:#c85037" id="2-0" width="7" height="7" x="57" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="3-0" width="7" height="7" x="57" y="31" rx="1"/>
+    <rect style="fill:#c85037" id="4-0" width="7" height="7" x="57" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="2-1" width="7" height="7" x="65" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="4-1" width="7" height="7" x="65" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="2-2" width="7" height="7" x="73" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="3-2" width="7" height="7" x="73" y="31" rx="1"/>
+    <rect style="fill:#c85037" id="4-2" width="7" height="7" x="73" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="2-4" width="7" height="7" x="86" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="3-4" width="7" height="7" x="86" y="31" rx="1"/>
+    <rect style="fill:#c85037" id="4-4" width="7" height="7" x="86" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="4-5" width="7" height="7" x="94" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="2-6" width="7" height="7" x="102" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="3-6" width="7" height="7" x="102" y="31" rx="1"/>
+    <rect style="fill:#c85037" id="4-6" width="7" height="7" x="102" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="0-8" width="7" height="7" x="115" y="7" rx="1"/>
+    <rect style="fill:#c85037" id="1-8" width="7" height="7" x="115" y="15" rx="1"/>
+    <rect style="fill:#c85037" id="2-8" width="7" height="7" x="115" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="3-8" width="7" height="7" x="115" y="31" rx="1"/>
+    <rect style="fill:#c85037" id="4-8" width="7" height="7" x="115" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="1-9" width="7" height="7" x="123" y="15" rx="1"/>
+    <rect style="fill:#c85037" id="4-9" width="7" height="7" x="123" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="2-11" width="7" height="7" x="136" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="3-11" width="7" height="7" x="136" y="31" rx="1"/>
+    <rect style="fill:#c85037" id="4-11" width="7" height="7" x="136" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="5-11" width="7" height="7" x="136" y="47" rx="1"/>
+    <rect style="fill:#c85037" id="6-11" width="7" height="7" x="136" y="55" rx="1"/>
+    <rect style="fill:#c85037" id="2-12" width="7" height="7" x="144" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="4-12" width="7" height="7" x="144" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="2-13" width="7" height="7" x="152" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="3-13" width="7" height="7" x="152" y="31" rx="1"/>
+    <rect style="fill:#c85037" id="4-13" width="7" height="7" x="152" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="2-15" width="7" height="7" x="165" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="3-15" width="7" height="7" x="165" y="31" rx="1"/>
+    <rect style="fill:#c85037" id="4-15" width="7" height="7" x="165" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="2-16" width="7" height="7" x="173" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="4-16" width="7" height="7" x="173" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="2-17" width="7" height="7" x="181" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="3-17" width="7" height="7" x="181" y="31" rx="1"/>
+    <rect style="fill:#c85037" id="4-17" width="7" height="7" x="181" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="4-19" width="7" height="7" x="194" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="2-20" width="7" height="7" x="202" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="3-20" width="7" height="7" x="202" y="31" rx="1"/>
+    <rect style="fill:#c85037" id="4-20" width="7" height="7" x="202" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="2-21" width="7" height="7" x="210" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="0-23" width="7" height="7" x="223" y="7" rx="1"/>
+    <rect style="fill:#c85037" id="1-23" width="7" height="7" x="223" y="15" rx="1"/>
+    <rect style="fill:#c85037" id="2-23" width="7" height="7" x="223" y="23" rx="1"/>
+    <rect style="fill:#c85037" id="3-23" width="7" height="7" x="223" y="31" rx="1"/>
+    <rect style="fill:#c85037" id="4-23" width="7" height="7" x="223" y="39" rx="1"/>
+    <rect style="fill:#c85037" id="1-24" width="7" height="7" x="231" y="15" rx="1"/>
+    <rect style="fill:#c85037" id="4-24" width="7" height="7" x="231" y="39" rx="1"/>
+  </g>
+</svg>
