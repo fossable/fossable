@@ -3,6 +3,12 @@ use std::error::Error;
 
 pub mod words;
 
+#[cfg(feature = "build-graphics")]
+mod svg;
+
+#[cfg(feature = "build-graphics")]
+mod emblem_svg;
+
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 #[command(propagate_version = true)]
@@ -29,6 +35,10 @@ enum Commands {
         /// File path of the artifact to verify
         artifact: String,
     },
+
+    /// Generate emblem graphics (SVG and PNG)
+    #[cfg(feature = "build-graphics")]
+    BuildGraphics,
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -41,7 +51,60 @@ fn main() -> Result<(), Box<dyn Error>> {
         } => todo!(),
         #[cfg(feature = "verify")]
         Commands::Verify { artifact } => fossable::signing::verify(artifact)?,
-        _ => todo!(),
+        #[cfg(feature = "build-graphics")]
+        Commands::BuildGraphics => build_graphics()?,
     };
+    Ok(())
+}
+
+#[cfg(feature = "build-graphics")]
+fn build_graphics() -> Result<(), Box<dyn Error>> {
+    use emblem_svg::EmblemRenderer;
+
+    println!("\n╭─────────────────────────────────────╮");
+    println!("│  Building Graphics Assets           │");
+    println!("╰─────────────────────────────────────╯\n");
+
+    for bg_style in [true, false] {
+        for emblem in [
+            #[cfg(feature = "project-goldboot")]
+            &fossable::emblem::GOLDBOOT,
+            #[cfg(feature = "project-gantry")]
+            &fossable::emblem::GANTRY,
+            #[cfg(feature = "project-sandpolis")]
+            &fossable::emblem::SANDPOLIS,
+            #[cfg(feature = "project-turbine")]
+            &fossable::emblem::TURBINE,
+            #[cfg(feature = "project-outpost")]
+            &fossable::emblem::OUTPOST,
+            #[cfg(feature = "project-workset")]
+            &fossable::emblem::WORKSET,
+            #[cfg(feature = "project-common-ci")]
+            &fossable::emblem::COMMON_CI,
+            #[cfg(feature = "project-fossdb")]
+            &fossable::emblem::FOSSDB,
+        ] {
+            let renderer =
+                EmblemRenderer::new(emblem, if bg_style { Some("fill:#333333") } else { None });
+
+            let emblem_svg = renderer.to_svg()?;
+            let bg_suffix = if bg_style { "-bg" } else { "" };
+            let path = format!("emblems/{}{}.svg", emblem.name, bg_suffix);
+
+            // Write svg only if changed
+            if emblem_svg.write_to(&path)? {
+                println!("  ✓ Generated {}", path);
+            }
+
+            // Write emblem rasters in varying sizes
+            for (width, height) in [(256, 64), (512, 128), (1024, 256), (2048, 512)] {
+                let path = format!("emblems/{}{}-{width}.png", emblem.name, bg_suffix);
+                if emblem_svg.rasterize(&path, width, height)? {
+                    println!("  ✓ Generated {} ({}x{})", path, width, height);
+                }
+            }
+        }
+    }
+
     Ok(())
 }
