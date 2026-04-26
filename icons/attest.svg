@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+  width="64"
+  height="64"
+  viewBox="0 0 64 64"
+  fill="none"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg">
+  <g id="attest-hashbang" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Stylized "#!" (hash-bang / shebang) -->
+
+    <!-- Hash -->
+    <path id="hash-v1" d="M 18 16 V 48" />
+    <path id="hash-v2" d="M 30 16 V 48" />
+    <path id="hash-h1" d="M 14 26 H 34" />
+    <path id="hash-h2" d="M 14 38 H 34" />
+
+    <!-- Bang -->
+    <path id="bang" d="M 44 16 V 40" />
+    <circle id="bang-dot" cx="44" cy="48" r="3.2" fill="#000000" stroke="none" />
+  </g>
+</svg>
+
