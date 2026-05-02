@@ -69,8 +69,10 @@ fn build_graphics() -> Result<(), Box<dyn Error>> {
         for emblem in [
             #[cfg(feature = "project-goldboot")]
             &fossable::emblem::GOLDBOOT,
-            #[cfg(feature = "project-gantry")]
-            &fossable::emblem::GANTRY,
+            #[cfg(feature = "project-attest")]
+            &fossable::emblem::ATTEST,
+            #[cfg(feature = "project-solder")]
+            &fossable::emblem::SOLDER,
             #[cfg(feature = "project-sandpolis")]
             &fossable::emblem::SANDPOLIS,
             #[cfg(feature = "project-turbine")]

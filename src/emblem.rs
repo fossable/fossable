@@ -183,19 +183,19 @@ pub const SOLDER: Emblem = Emblem {
 pub const ATTEST: Emblem = Emblem {
     name: "attest",
     word: [
+        "                    ",
         "    ◼  ◼          ◼ ",
         "    ◼◼ ◼◼         ◼◼",
         " ◼◼ ◼  ◼   ◼◼  ◼◼ ◼ ",
         "◼ ◼ ◼  ◼  ◼◼   ◼  ◼ ",
         " ◼◼ ◼◼ ◼◼  ◼◼ ◼◼  ◼◼",
         "                    ",
-        "                    ",
     ],
     margin_px: 7,
     rect_side_px: 7,
     rect_gap_px: 1,
     color: "#248467",
-    icon: include_str!("../icons/gantry.svg"),
+    icon: include_str!("../icons/attest.svg"),
     icon_width: Some(50),
     year: 2026,
 };

@@ -56,7 +56,7 @@ impl Svg {
 
         // Calculate scale to fit the SVG into the target dimensions
         let svg_size = svg.size();
-        let scale = width as f32 / svg_size.width();
+        let scale = (width as f32 / svg_size.width()).min(height as f32 / svg_size.height());
 
         let transform = Transform::from_scale(scale, scale);
         resvg::render(&svg, transform, &mut pixmap.as_mut());
@@ -97,8 +97,8 @@ pub struct SvgGroup {
 pub struct SvgPath {
     #[serde(rename = "@id")]
     pub id: String,
-    #[serde(rename = "@style")]
-    pub style: String,
+    #[serde(rename = "@style", skip_serializing_if = "Option::is_none")]
+    pub style: Option<String>,
     #[serde(rename = "@d")]
     pub d: String,
     #[serde(rename = "@stroke", skip_serializing_if = "Option::is_none")]
